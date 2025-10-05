@@ -1,15 +1,13 @@
+const express = require("express");
 const routerUser = express.Router();
-const userData = require('../user.json');
-const express = require('express')
+const userData = require("../user.json");
 
 /*
 - Return all details from user.json file to client as JSON format
 */
-router.get('/profile', (req,res) => {
+routerUser.get("/profile", (req, res) => {
   res.json(userData);
 });
-
-
 
 /*
 - Modify /login router to accept username and password as JSON body parameter
@@ -30,25 +28,32 @@ router.get('/profile', (req,res) => {
         message: "Password is invalid"
     }
 */
-routerUser.post('/login', (req, res)=>{
-    const { username, password } = req.body;
+routerUser.post("/login", (req, res) => {
+  const { username, password } = req.body;
 
-    if(usernae === userData.username) {
-        if(password === userData.password){
-            res.json({
-                status: true,
-                message: "User is valid"
-            });
-        }else {
-            res.json({
-                status: false,
-                message: "Password is invalid"
-            });
-        
-        } else {
-            res.json({
-                status: false,
-                message: "User Name is invalid"
-            });
+  if (username === userData.username) {
+    if (password === userData.password) {
+      res.json({
+        status: true,
+        message: "User is valid",
+      });
+    } else {
+      res.json({
+        status: false,
+        message: "Password is invalid",
+      });
     }
+  } else {
+    res.json({
+      status: false,
+      message: "User Name is invalid",
+    });
+  }
 });
+
+routerUser.get("/logout/:username", (req, res) => {
+  const { username } = req.params;
+  res.send(`<b>${username} successfully logged out.</b>`);
+});
+
+module.exports = routerUser;
